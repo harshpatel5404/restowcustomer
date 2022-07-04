@@ -1,20 +1,13 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:restowcustomer/Constants/colors.dart';
 import 'package:restowcustomer/Screens/Notifications/notifications.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/drawer_menu.dart';
-
 import '../../Widgets/icon.dart';
-import '../../Widgets/notinsurance_dialog.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({Key? key}) : super(key: key);
@@ -25,66 +18,30 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
-
   final items = ['10:30', '11:00', '11:30', '12:00'];
   String selectedValue = '10:30';
-  DateTime selectedDate = DateTime.now();
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
+  DateTime dt = DateTime.now();
   bool isPm = false;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController descController = TextEditingController(text: "");
 
-  DateTime _currentDate = DateTime(2022, 7, 3);
-  final DateTime _currentDate2 = DateTime(2022, 7, 3);
-  final String _currentMonth = DateFormat.yMMM().format(DateTime(2022, 7, 3));
-  final DateTime _targetDateTime = DateTime(2022, 7, 3);
-  static final Widget _eventIcon = Container(
-    decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(const Radius.circular(1000)),
-        border: Border.all(color: Colors.blue, width: 2.0)),
-    child: Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),
+  final EventList<Event> _markedDateMap = EventList<Event>(
+    events: {},
   );
 
   @override
-  Widget build(BuildContext context) {
-    String noEventText = "No event here";
-    String calendarText = noEventText;
+  void initState() {
+    super.initState();
+    _markedDateMap.add(
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        Event(
+          date: DateTime(2022, 7, 6),
+          title: 'Event 5',
+        ));
+  }
 
-    CalendarCarousel myCalendarCarousel;
-    DateTime currentDate = DateTime.now();
-    DateTime selectedDate = DateTime.now();
-    String selectedMonth = DateFormat.yMMM().format(DateTime.now());
-    DateTime targetDateTime = DateTime.now();
-    var calendarcoursel = CalendarCarousel(
-      height: Get.height * 0.6,
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
-      todayButtonColor: kPrimaryColor,
-      todayBorderColor: kPrimaryColor,
-      todayTextStyle: TextStyle(color: Colors.black),
-      dayButtonColor: kPrimaryColor,
-      showWeekDays: false,
-      iconColor: kPrimaryColor,
-      weekFormat: false,
-      daysHaveCircularBorder: true,
-      childAspectRatio: 1,
-    );
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -153,31 +110,77 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   child: Divider(),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  margin: EdgeInsets.symmetric(horizontal: 5.0),
                   child: CalendarCarousel(
-                    childAspectRatio: 1,
+                    customGridViewPhysics: const NeverScrollableScrollPhysics(),
                     height: Get.height * 0.5,
-                    weekendTextStyle: TextStyle(color: Colors.grey),
+                    showHeaderButton: true,
+                    weekendTextStyle: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: "Roboto",
+                    ),
                     weekFormat: false,
                     iconColor: Colors.grey,
-                    headerTextStyle: TextStyle(
+                    markedDateWidget: Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          dt.day.toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ),
+                    headerTextStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 20,
+                      fontFamily: "Roboto",
                     ),
-                    showIconBehindDayText: true,
-                    selectedDayBorderColor: Colors.green,
-                    selectedDayButtonColor: Colors.green,
-                    selectedDayTextStyle: TextStyle(color: Colors.white),
+                    showHeader: true,
+                    showWeekDays: true,
+                    todayButtonColor: kPrimaryColor,
+                    markedDatesMap: _markedDateMap,
+                    daysTextStyle: const TextStyle(
+                        fontFamily: "Roboto", color: Colors.black),
+                    selectedDayTextStyle: const TextStyle(color: Colors.black),
                     todayBorderColor: Colors.transparent,
-                    weekdayTextStyle: TextStyle(color: Colors.black),
+                    weekdayTextStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontFamily: "Roboto",
+                    ),
+                    weekDayMargin: EdgeInsets.only(bottom: 10),
+                    inactiveDaysTextStyle: const TextStyle(
+                        fontFamily: "Roboto", color: Colors.black),
+                    prevDaysTextStyle: const TextStyle(
+                        fontFamily: "Roboto", color: Colors.grey),
+                    nextDaysTextStyle: const TextStyle(
+                        fontFamily: "Roboto", color: Colors.grey),
                     maxSelectedDate: DateTime(DateTime.now().year + 100,
                         DateTime.now().month, DateTime.now().day),
                     onDayPressed: (val, event) {
-                      print(val);
+                      // print(val);
+                      // selectedDate = val;
+                      dt = DateTime.parse(val.toString());
+                      _markedDateMap.clear();
+                      _markedDateMap.add(
+                          DateTime(dt.year, dt.month, dt.day),
+                          Event(
+                            date: DateTime(dt.year, dt.month, dt.day),
+                            title: 'Event 5',
+                          ));
+
+                      setState(() {});
                     },
-                    daysHaveCircularBorder: true,
-                    dayButtonColor: kPrimaryColor,
-                    todayTextStyle: TextStyle(color: Colors.black),
+                    todayTextStyle: const TextStyle(color: Colors.black),
                   ),
                 ),
                 const Padding(
@@ -185,20 +188,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   child: Divider(),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Select Time",
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13,
                           color: textcolor,
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.all(3),
+                        padding: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
                             border: Border.all(width: 0.7, color: Colors.grey)),
@@ -219,10 +222,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 ),
                               ),
                             ),
-                            Text(
+                            const Text(
                               " | ",
                               textAlign: TextAlign.start,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
                               ),
@@ -277,10 +280,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           child: Text(items),
                         );
                       }).toList(),
-                      onChanged: (selected) {
-                        setState(() {
-                          selectedValue = selected.toString();
-                        });
+                      onChanged: (val) {
+                        selectedValue = val.toString();
+                        setState(() {});
                       },
                     ),
                   ),
@@ -298,200 +300,3 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_calendar_carousel/classes/event.dart';
-// import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-// import 'package:intl/intl.dart';
-
-// class CalendarScreen extends StatefulWidget {
-//   @override
-//   _CalendarScreenState createState() => _CalendarScreenState();
-// }
-
-// class _CalendarScreenState extends State<CalendarScreen> {
-//   DateTime _currentDate = DateTime.now();
-//   DateTime _currentDate2 = DateTime.now();
-//   String _currentMonth = DateFormat.yMMM().format(DateTime.now());
-//   DateTime _targetDateTime = DateTime.now();
-
-//   late CalendarCarousel _calendarCarouselNoHeader;
-
-//   static Widget _eventIcon =  Container(
-//     decoration:  BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.all(Radius.circular(1000)),
-//         border: Border.all(color: Colors.blue, width: 2.0)),
-//     child:  Icon(
-//       Icons.person,
-//       color: Colors.amber,
-//     ),
-//   );
-
-//   EventList<Event> _markedDateMap =  EventList<Event>(
-//     events: {
-//        DateTime(2020, 2, 10): [
-//          Event(
-//           date: new DateTime(2020, 2, 14),
-//           title: 'Event 1',
-//           icon: _eventIcon,
-//           dot: Container(
-//             margin: EdgeInsets.symmetric(horizontal: 1.0),
-//             color: Colors.red,
-//             height: 5.0,
-//             width: 5.0,
-//           ),
-//         ),
-//         new Event(
-//           date: new DateTime(2020, 2, 10),
-//           title: 'Event 2',
-//           icon: _eventIcon,
-//         ),
-//         new Event(
-//           date: new DateTime(2020, 2, 15),
-//           title: 'Event 3',
-//           icon: _eventIcon,
-//         ),
-//       ],
-//     },
-//   );
-
-//   @override
-//   void initState() {
-//     _markedDateMap.add(
-//         new DateTime(2020, 2, 25),
-//         new Event(
-//           date: new DateTime(2020, 2, 25),
-//           title: 'Event 5',
-//           icon: _eventIcon,
-//         ));
-
-//     _markedDateMap.add(
-//         new DateTime(2020, 2, 10),
-//         new Event(
-//           date: new DateTime(2020, 2, 10),
-//           title: 'Event 4',
-//           icon: _eventIcon,
-//         ));
-
-//     _markedDateMap.addAll(new DateTime(2022, 7, 11), [
-//       new Event(
-//         date: DateTime(2022, 7, 11),
-//         title: 'Event 1',
-//         icon: _eventIcon,
-//       ),
-//       new Event(
-//         date: new DateTime(2022, 11, 7),
-//         title: 'Event 2',
-//         icon: _eventIcon,
-//       ),
-//       new Event(
-//         date: new DateTime(2022, 7, 11),
-//         title: 'Event 3',
-//         icon: _eventIcon,
-//       ),
-//     ]);
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     _calendarCarouselNoHeader = CalendarCarousel(
-//       todayBorderColor: Colors.green,
-//       onDayPressed: (DateTime date, List events) {
-//         this.setState(() => _currentDate2 = date);
-//       },
-
-//       showOnlyCurrentMonthDate: false,
-//       weekendTextStyle: TextStyle(
-//         color: Colors.red,
-//       ),
-//       thisMonthDayBorderColor: Colors.grey,
-//       weekFormat: false,
-// //      firstDayOfWeek: 4,
-//       // markedDatesMap: _markedDateMap,
-//       height: 420.0,
-//       // selectedDateTime: _currentDate2,
-//       targetDateTime: _targetDateTime,
-//       customGridViewPhysics: NeverScrollableScrollPhysics(),
-//       markedDateCustomShapeBorder: CircleBorder(
-//           side: BorderSide(
-//         color: Colors.yellow,
-//       )),
-
-//       showHeader: true,
-
-//       onCalendarChanged: (DateTime date) {
-//         this.setState(() {
-//           _targetDateTime = date;
-//           _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-//         });
-//       },
-//       daysHaveCircularBorder: false,
-//       onDayLongPressed: (DateTime date) {
-//         print('long pressed date $date');
-//       },
-//     );
-
-//     return new Scaffold(
-//         appBar: new AppBar(
-//           title: new Text('Calendar'),
-//         ),
-//         body: SingleChildScrollView(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: <Widget>[
-//               //custom icon
-
-//               Container(
-//                 margin: EdgeInsets.only(
-//                   top: 30.0,
-//                   bottom: 16.0,
-//                   left: 16.0,
-//                   right: 16.0,
-//                 ),
-//                 child: new Row(
-//                   children: <Widget>[
-//                     Expanded(
-//                         child: Text(
-//                       _currentMonth,
-//                       style: TextStyle(
-//                         fontWeight: FontWeight.bold,
-//                         fontSize: 24.0,
-//                       ),
-//                     )),
-//                     FlatButton(
-//                       child: Text('PREV'),
-//                       onPressed: () {
-//                         setState(() {
-//                           _targetDateTime = DateTime(
-//                               _targetDateTime.year, _targetDateTime.month - 1);
-//                           _currentMonth =
-//                               DateFormat.yMMM().format(_targetDateTime);
-//                         });
-//                       },
-//                     ),
-//                     FlatButton(
-//                       child: Text('NEXT'),
-//                       onPressed: () {
-//                         setState(() {
-//                           _targetDateTime = DateTime(
-//                               _targetDateTime.year, _targetDateTime.month + 1);
-//                           _currentMonth =
-//                               DateFormat.yMMM().format(_targetDateTime);
-//                         });
-//                       },
-//                     )
-//                   ],
-//                 ),
-//               ),
-//               Container(
-//                 margin: EdgeInsets.symmetric(horizontal: 16.0),
-//                 child: _calendarCarouselNoHeader,
-//               ), //
-//             ],
-//           ),
-//         ));
-//   }
-// }
