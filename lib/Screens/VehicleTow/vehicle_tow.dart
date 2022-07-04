@@ -8,6 +8,7 @@ import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/drawer_menu.dart';
 
 import '../../Widgets/icon.dart';
+import '../../Widgets/notinsurance_dialog.dart';
 
 class VehicleTowPage extends StatefulWidget {
   const VehicleTowPage({Key? key}) : super(key: key);
@@ -24,7 +25,11 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
   List paylist = ["Direct Invoice", "Pay By Card", "Insurance", "Bank / Fund"];
   int payindex = 0;
   String isSelectCard = "Car towing";
-
+  TextEditingController numberController = TextEditingController(text: "");
+  TextEditingController brandController = TextEditingController(text: "");
+  TextEditingController modelController = TextEditingController(text: "");
+  TextEditingController wheelController = TextEditingController(text: "");
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   List row1 = [
     {"name": "Car Towing", "img": "icon1"},
     {"name": "Motorcycle Towing", "img": "icon2"},
@@ -47,7 +52,6 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
   ];
 
   bool isDropdownOpen = false;
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController descController = TextEditingController(text: "");
 
   @override
@@ -99,630 +103,44 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: Get.width * 0.06),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: Get.width * 0.05,
-                ),
-                const Center(
-                  child: Text(
-                    "Please add details to continue",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: ksecondarytextcolor,
+            child: Form(
+              key: formkey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: Get.width * 0.05,
+                  ),
+                  const Center(
+                    child: Text(
+                      "Please add details to continue",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: ksecondarytextcolor,
+                      ),
                     ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Divider(),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5.0),
-                  child: Text(
-                    "Select Vehicle",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: textcolor,
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Divider(),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.0),
+                    child: Text(
+                      "Select Vehicle",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: textcolor,
+                      ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    isDropdownOpen = !isDropdownOpen;
-                    setState(() {});
-                  },
-                  child: Container(
-                    width: Get.width,
-                    height: Get.width * 0.17,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                        color: const Color(0xffF7F6FB),
-                        borderRadius: BorderRadius.circular(7)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          selectedValue,
-                          style: const TextStyle(
-                              color: Color(0xffC3C3C3),
-                              fontSize: 15,
-                              fontFamily: "Roboto"),
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/down.svg",
-                          height: 8,
-                          width: 8,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                isDropdownOpen
-                    ? Card(
-                        elevation: 6,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: items.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                selectedValue = items[index].toString();
-                                isDropdownOpen = false;
-                                setState(() {});
-                              },
-                              child: Container(
-                                decoration: items.length - 1 == index
-                                    ? const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(5),
-                                            bottomRight: Radius.circular(5)))
-                                    : const BoxDecoration(),
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      title: Text(items[index]),
-                                    ),
-                                    items.length - 1 != index
-                                        ? const Divider()
-                                        : const SizedBox(
-                                            height: 5,
-                                          )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      )
-                    : const SizedBox(),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: Get.height * 0.03,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 12),
-                    width: Get.width,
-                    color: kPrimaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
-                          "Partner’s Vehicle / Add New Vehicle",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontFamily: "Roboto"),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row1[0]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row1[0]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row1[0]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row1[0]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                          onTap: () {
-                            isSelectCard = row1[1]["name"];
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: Get.height * 0.1,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isSelectCard == row1[1]["name"]
-                                    ? const Color(0xffCAFACC)
-                                    : const Color(0xffEAEAEA)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const SizedBox(),
-                                SvgPicture.asset(
-                                  "assets/icons/${row1[1]['img']}.svg",
-                                  height: Get.width * 0.07,
-                                  width: Get.width * 0.07,
-                                  color: const Color(0xff818181),
-                                ),
-                                Text(
-                                  row1[1]["name"],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: const Color(0xff818181),
-                                      fontSize: 10.5),
-                                ),
-                                const SizedBox(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row1[2]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row1[2]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row1[2]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row1[2]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                //row2
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row2[0]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row2[0]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row2[0]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row2[0]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                          onTap: () {
-                            isSelectCard = row2[1]["name"];
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: Get.height * 0.1,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isSelectCard == row2[1]["name"]
-                                    ? const Color(0xffCAFACC)
-                                    : const Color(0xffEAEAEA)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const SizedBox(),
-                                SvgPicture.asset(
-                                  "assets/icons/${row2[1]['img']}.svg",
-                                  height: Get.width * 0.07,
-                                  width: Get.width * 0.07,
-                                  color: const Color(0xff818181),
-                                ),
-                                Text(
-                                  row2[1]["name"],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: const Color(0xff818181),
-                                      fontSize: 10.5),
-                                ),
-                                const SizedBox(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row2[2]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row2[2]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row2[2]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row2[2]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //row3
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row3[0]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row3[0]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row3[0]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row3[0]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                          onTap: () {
-                            isSelectCard = row3[1]["name"];
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: Get.height * 0.1,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isSelectCard == row3[1]["name"]
-                                    ? const Color(0xffCAFACC)
-                                    : const Color(0xffEAEAEA)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const SizedBox(),
-                                SvgPicture.asset(
-                                  "assets/icons/${row3[1]['img']}.svg",
-                                  height: Get.width * 0.07,
-                                  width: Get.width * 0.07,
-                                  color: const Color(0xff818181),
-                                ),
-                                Text(
-                                  row3[1]["name"],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: const Color(0xff818181),
-                                      fontSize: 10.5),
-                                ),
-                                const SizedBox(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row3[2]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row3[2]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row3[2]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row3[2]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                //row4
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3.5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row4[0]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row4[0]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row4[0]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row4[0]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: InkWell(
-                          onTap: () {
-                            isSelectCard = row4[1]["name"];
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: Get.height * 0.1,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isSelectCard == row4[1]["name"]
-                                    ? const Color(0xffCAFACC)
-                                    : const Color(0xffEAEAEA)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                const SizedBox(),
-                                SvgPicture.asset(
-                                  "assets/icons/${row4[1]['img']}.svg",
-                                  height: Get.width * 0.07,
-                                  width: Get.width * 0.07,
-                                  color: const Color(0xff818181),
-                                ),
-                                Text(
-                                  row4[1]["name"],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: const Color(0xff818181),
-                                      fontSize: 10.5),
-                                ),
-                                const SizedBox(),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      InkWell(
-                        onTap: () {
-                          isSelectCard = row4[2]["name"];
-                          setState(() {});
-                        },
-                        child: Container(
-                          height: Get.height * 0.1,
-                          width: Get.width * 0.26,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: isSelectCard == row4[2]["name"]
-                                  ? const Color(0xffCAFACC)
-                                  : const Color(0xffEAEAEA)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const SizedBox(),
-                              SvgPicture.asset(
-                                "assets/icons/${row4[2]['img']}.svg",
-                                height: Get.width * 0.07,
-                                width: Get.width * 0.07,
-                                color: const Color(0xff818181),
-                              ),
-                              Text(
-                                row4[2]["name"],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: const Color(0xff818181),
-                                    fontSize: 10.5),
-                              ),
-                              const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: Get.height * 0.03),
-                  child: InkWell(
-                    onTap: () {},
+                  InkWell(
+                    onTap: () {
+                      isDropdownOpen = !isDropdownOpen;
+                      setState(() {});
+                    },
                     child: Container(
                       width: Get.width,
                       height: Get.width * 0.17,
@@ -731,124 +149,848 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                       decoration: BoxDecoration(
                           color: const Color(0xffF7F6FB),
                           borderRadius: BorderRadius.circular(7)),
-                      child: DottedBorder(
-                        color: const Color(0xffB9B9B9),
-                        strokeWidth: 1,
-                        dashPattern: [4, 4, 4],
-                        borderType: BorderType.Rect,
-                        radius: const Radius.circular(12),
-                        padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            selectedValue,
+                            style: const TextStyle(
+                                color: Color(0xffC3C3C3),
+                                fontSize: 15,
+                                fontFamily: "Roboto"),
+                          ),
+                          SvgPicture.asset(
+                            "assets/icons/down.svg",
+                            height: 8,
+                            width: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  isDropdownOpen
+                      ? Card(
+                          elevation: 6,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {
+                                  selectedValue = items[index].toString();
+                                  isDropdownOpen = false;
+                                  setState(() {});
+                                },
+                                child: Container(
+                                  decoration: items.length - 1 == index
+                                      ? const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: const BorderRadius.only(
+                                              bottomLeft: Radius.circular(5),
+                                              bottomRight: Radius.circular(5)))
+                                      : const BoxDecoration(),
+                                  child: Column(
+                                    children: [
+                                      ListTile(
+                                        title: Text(items[index]),
+                                      ),
+                                      items.length - 1 != index
+                                          ? const Divider()
+                                          : const SizedBox(
+                                              height: 5,
+                                            )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : const SizedBox(),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: Get.height * 0.03,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 12),
+                      width: Get.width,
+                      color: kPrimaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            "Partner's Vehicle / Add New Vehicle",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontFamily: "Roboto"),
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Vehicle Number",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: textcolor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Container(
-                          width: Get.width * 0.7,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/upload.svg",
-                                height: Get.width * 0.08,
-                                width: Get.width * 0.08,
-                                color: const Color(0xff0037A6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF7F6FB),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextField(
+                            controller: numberController,
+                            cursorColor: Colors.black,
+                            style:
+                                const TextStyle(fontSize: 17, color: textcolor),
+                            decoration: InputDecoration(
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: const Color(0xffC3C3C3)),
+                              hintText: 'Vehicle Number',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.02),
+                      const Text(
+                        "Vehicle Brand",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: textcolor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF7F6FB),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextField(
+                            controller: brandController,
+                            cursorColor: Colors.black,
+                            style:
+                                const TextStyle(fontSize: 17, color: textcolor),
+                            decoration: InputDecoration(
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: const Color(0xffC3C3C3)),
+                              hintText: 'Vehicle Brand',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.02),
+                      Text(
+                        "Vehicle Model",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: textcolor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF7F6FB),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextField(
+                            controller: modelController,
+                            cursorColor: Colors.black,
+                            style:
+                                const TextStyle(fontSize: 17, color: textcolor),
+                            decoration: InputDecoration(
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: const Color(0xffC3C3C3)),
+                              hintText: 'Vehicle Model',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.02),
+                      const Text(
+                        "Vehicle Wheel",
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: textcolor,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF7F6FB),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: TextField(
+                            controller: wheelController,
+                            cursorColor: Colors.black,
+                            style:
+                                const TextStyle(fontSize: 17, color: textcolor),
+                            decoration: InputDecoration(
+                              hintStyle: const TextStyle(
+                                  fontSize: 17, color: const Color(0xffC3C3C3)),
+                              hintText: 'Vehicle Wheel',
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Get.height * 0.02),
+                    ],
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row1[0]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row1[0]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row1[0]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row1[0]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                            onTap: () {
+                              isSelectCard = row1[1]["name"];
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: Get.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isSelectCard == row1[1]["name"]
+                                      ? const Color(0xffCAFACC)
+                                      : const Color(0xffEAEAEA)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const SizedBox(),
+                                  SvgPicture.asset(
+                                    "assets/icons/${row1[1]['img']}.svg",
+                                    height: Get.width * 0.07,
+                                    width: Get.width * 0.07,
+                                    color: const Color(0xff818181),
+                                  ),
+                                  Text(
+                                    row1[1]["name"],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: const Color(0xff818181),
+                                        fontSize: 10.5),
+                                  ),
+                                  const SizedBox(),
+                                ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row1[2]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row1[2]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row1[2]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row1[2]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //row2
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row2[0]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row2[0]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row2[0]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row2[0]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                            onTap: () {
+                              isSelectCard = row2[1]["name"];
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: Get.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isSelectCard == row2[1]["name"]
+                                      ? const Color(0xffCAFACC)
+                                      : const Color(0xffEAEAEA)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const SizedBox(),
+                                  SvgPicture.asset(
+                                    "assets/icons/${row2[1]['img']}.svg",
+                                    height: Get.width * 0.07,
+                                    width: Get.width * 0.07,
+                                    color: const Color(0xff818181),
+                                  ),
+                                  Text(
+                                    row2[1]["name"],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: const Color(0xff818181),
+                                        fontSize: 10.5),
+                                  ),
+                                  const SizedBox(),
+                                ],
                               ),
-                              const Text(
-                                "Upload Images",
-                                style: TextStyle(
-                                    color: Color(0xff0037A6),
-                                    fontSize: 15,
-                                    fontFamily: "Roboto"),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row2[2]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row2[2]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row2[2]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row2[2]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //row3
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row3[0]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row3[0]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row3[0]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row3[0]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                            onTap: () {
+                              isSelectCard = row3[1]["name"];
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: Get.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isSelectCard == row3[1]["name"]
+                                      ? const Color(0xffCAFACC)
+                                      : const Color(0xffEAEAEA)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const SizedBox(),
+                                  SvgPicture.asset(
+                                    "assets/icons/${row3[1]['img']}.svg",
+                                    height: Get.width * 0.07,
+                                    width: Get.width * 0.07,
+                                    color: const Color(0xff818181),
+                                  ),
+                                  Text(
+                                    row3[1]["name"],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: const Color(0xff818181),
+                                        fontSize: 10.5),
+                                  ),
+                                  const SizedBox(),
+                                ],
                               ),
-                            ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row3[2]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row3[2]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row3[2]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row3[2]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //row4
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row4[0]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row4[0]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row4[0]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row4[0]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          flex: 1,
+                          fit: FlexFit.tight,
+                          child: InkWell(
+                            onTap: () {
+                              isSelectCard = row4[1]["name"];
+                              setState(() {});
+                            },
+                            child: Container(
+                              height: Get.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isSelectCard == row4[1]["name"]
+                                      ? const Color(0xffCAFACC)
+                                      : const Color(0xffEAEAEA)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const SizedBox(),
+                                  SvgPicture.asset(
+                                    "assets/icons/${row4[1]['img']}.svg",
+                                    height: Get.width * 0.07,
+                                    width: Get.width * 0.07,
+                                    color: const Color(0xff818181),
+                                  ),
+                                  Text(
+                                    row4[1]["name"],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: const Color(0xff818181),
+                                        fontSize: 10.5),
+                                  ),
+                                  const SizedBox(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        InkWell(
+                          onTap: () {
+                            isSelectCard = row4[2]["name"];
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: Get.height * 0.1,
+                            width: Get.width * 0.26,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isSelectCard == row4[2]["name"]
+                                    ? const Color(0xffCAFACC)
+                                    : const Color(0xffEAEAEA)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(),
+                                SvgPicture.asset(
+                                  "assets/icons/${row4[2]['img']}.svg",
+                                  height: Get.width * 0.07,
+                                  width: Get.width * 0.07,
+                                  color: const Color(0xff818181),
+                                ),
+                                Text(
+                                  row4[2]["name"],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: const Color(0xff818181),
+                                      fontSize: 10.5),
+                                ),
+                                const SizedBox(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: Get.height * 0.03),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        width: Get.width,
+                        height: Get.width * 0.17,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                            color: const Color(0xffF7F6FB),
+                            borderRadius: BorderRadius.circular(7)),
+                        child: DottedBorder(
+                          color: const Color(0xffB9B9B9),
+                          strokeWidth: 1,
+                          dashPattern: [4, 4, 4],
+                          borderType: BorderType.Rect,
+                          radius: const Radius.circular(12),
+                          padding: const EdgeInsets.all(10),
+                          child: Container(
+                            width: Get.width * 0.7,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/upload.svg",
+                                  height: Get.width * 0.08,
+                                  width: Get.width * 0.08,
+                                  color: const Color(0xff0037A6),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  "Upload Images",
+                                  style: TextStyle(
+                                      color: Color(0xff0037A6),
+                                      fontSize: 15,
+                                      fontFamily: "Roboto"),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          height: Get.height * 0.14,
-                          width: Get.width * 0.28,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                  fit: BoxFit.fitHeight,
-                                  image: AssetImage("assets/images/img2.png")),
-                              color: const Color(0xffEAEAEA)),
-                        ),
-                        Positioned(
-                            top: 8,
-                            right: 8,
-                            child: SvgPicture.asset(
-                              "assets/icons/remove.svg",
-                              height: Get.width * 0.06,
-                            ))
-                      ],
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: Get.height * 0.14,
-                          width: Get.width * 0.28,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                  fit: BoxFit.fitHeight,
-                                  image: AssetImage("assets/images/img2.png")),
-                              color: const Color(0xffEAEAEA)),
-                        ),
-                        Positioned(
-                            top: 8,
-                            right: 8,
-                            child: SvgPicture.asset(
-                              "assets/icons/remove.svg",
-                              height: Get.width * 0.06,
-                            ))
-                      ],
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          height: Get.height * 0.14,
-                          width: Get.width * 0.28,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                  fit: BoxFit.fitHeight,
-                                  image: AssetImage("assets/images/img2.png")),
-                              color: const Color(0xffEAEAEA)),
-                        ),
-                        Positioned(
-                            top: 8,
-                            right: 8,
-                            child: SvgPicture.asset(
-                              "assets/icons/remove.svg",
-                              height: Get.width * 0.06,
-                            ))
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: Get.width * 0.05,
-                ),
-                const Text(
-                  "Briefly Describe",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: textcolor,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            height: Get.height * 0.14,
+                            width: Get.width * 0.28,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: const DecorationImage(
+                                    fit: BoxFit.fitHeight,
+                                    image:
+                                        AssetImage("assets/images/img2.png")),
+                                color: const Color(0xffEAEAEA)),
+                          ),
+                          Positioned(
+                              top: 8,
+                              right: 8,
+                              child: SvgPicture.asset(
+                                "assets/icons/remove.svg",
+                                height: Get.width * 0.06,
+                              ))
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: Get.height * 0.14,
+                            width: Get.width * 0.28,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: const DecorationImage(
+                                    fit: BoxFit.fitHeight,
+                                    image:
+                                        AssetImage("assets/images/img2.png")),
+                                color: const Color(0xffEAEAEA)),
+                          ),
+                          Positioned(
+                              top: 8,
+                              right: 8,
+                              child: SvgPicture.asset(
+                                "assets/icons/remove.svg",
+                                height: Get.width * 0.06,
+                              ))
+                        ],
+                      ),
+                      Stack(
+                        children: [
+                          Container(
+                            height: Get.height * 0.14,
+                            width: Get.width * 0.28,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: const DecorationImage(
+                                    fit: BoxFit.fitHeight,
+                                    image:
+                                        AssetImage("assets/images/img2.png")),
+                                color: const Color(0xffEAEAEA)),
+                          ),
+                          Positioned(
+                              top: 8,
+                              right: 8,
+                              child: SvgPicture.asset(
+                                "assets/icons/remove.svg",
+                                height: Get.width * 0.06,
+                              ))
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Form(
-                    key: formkey,
+                  SizedBox(
+                    height: Get.width * 0.05,
+                  ),
+                  const Text(
+                    "Briefly Describe",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: textcolor,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0xffF7F6FB),
@@ -870,406 +1012,71 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                       ),
                     ),
                   ),
-                ),
-                const Center(
-                  child: Text(
-                    "How do you want to pay?",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  const Center(
+                    child: Text(
+                      "How do you want to pay?",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: Get.height * 0.02,
-                  ),
-                  child: Container(
-                    height: Get.width * 0.12,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: paylist.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 6.0),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                payindex = index;
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 12),
-                              color: payindex == index
-                                  ? kPrimaryColor
-                                  : const Color(0xffE8F1E5),
-                              child: Text(
-                                paylist[index],
-                                style: TextStyle(
-                                    color: payindex == index
-                                        ? Colors.white
-                                        : const Color(0xff4E6B57),
-                                    fontSize: 12.5,
-                                    fontFamily: "Roboto"),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: Get.height * 0.02,
+                    ),
+                    child: Container(
+                      height: Get.width * 0.12,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: paylist.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 6.0),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  payindex = index;
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 12),
+                                color: payindex == index
+                                    ? kPrimaryColor
+                                    : const Color(0xffE8F1E5),
+                                child: Text(
+                                  paylist[index],
+                                  style: TextStyle(
+                                      color: payindex == index
+                                          ? Colors.white
+                                          : const Color(0xff4E6B57),
+                                      fontSize: 12.5,
+                                      fontFamily: "Roboto"),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                MyButton(
-                    onpress: () {
-                      notInsuranceDialog(context);
-                    },
-                    btntext: "Submit"),
-                SizedBox(
-                  height: Get.width * 0.05,
-                ),
-              ],
+                  MyButton(
+                      onpress: () {
+                        notInsuranceDialog(context);
+                      },
+                      btntext: "Submit"),
+                  SizedBox(
+                    height: Get.width * 0.05,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-Future waitingDialog(context) {
-  return showDialog(
-    context: context,
-    builder: (ctx) => Dialog(
-      backgroundColor: Colors.white,
-      insetPadding: const EdgeInsets.all(10),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: Get.height * 0.45,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5), color: Colors.white),
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(),
-                Image.asset(
-                  "assets/images/wait.png",
-                  height: Get.width * 0.35,
-                  width: Get.width * 0.35,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "Wait !!",
-                  style: const TextStyle(
-                      color: Color(0xff578A27),
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Roboto"),
-                ),
-                const Text(
-                  "Let us check your insurance\ncoverage status.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      height: 1.5,
-                      color: Color(0xff8A8A8A),
-                      fontSize: 14,
-                      fontFamily: "Roboto"),
-                ),
-                SizedBox(),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.close,
-                size: 25,
-                color: Color(0xffADADAD),
-              ),
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
-
-
-Future notInsuranceDialog(context) {
-  return showDialog(
-    context: context,
-    builder: (ctx) => Dialog(
-      backgroundColor: Colors.white,
-      insetPadding: const EdgeInsets.all(10),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: Get.height * 0.25,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5), color: Colors.white),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(),
-                const Text(
-                  "Your vehical is not insured.",
-                  style: const TextStyle(
-                      color: Color(0xff578A27),
-                      fontSize: 20,
-                      fontFamily: "Roboto"),
-                ),
-                const Text(
-                  "Please select defferent payment option.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      height: 1.5,
-                      color: Color(0xff8A8A8A),
-                      fontSize: 15,
-                      fontFamily: "Roboto"),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.close,
-                size: 25,
-                color: Color(0xffADADAD),
-              ),
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
-
-Future proceedDialog(context) {
-  return showDialog(
-    context: context,
-    builder: (ctx) => Dialog(
-      backgroundColor: Colors.white,
-      insetPadding: const EdgeInsets.all(10),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: Get.height * 0.45,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5), color: Colors.white),
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(),
-                Image.asset(
-                  "assets/images/insurance.png",
-                  height: Get.width * 0.35,
-                  width: Get.width * 0.35,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "You are under insurance coverage\nplease proceed.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      height: 1.5,
-                      color: Color(0xff8A8A8A),
-                      fontSize: 14,
-                      fontFamily: "Roboto"),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.05, vertical: 10),
-                  child: MyButton(onpress: () {}, btntext: "Proceed"),
-                ),
-                SizedBox(),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: const Icon(
-                Icons.close,
-                size: 25,
-                color: Color(0xffADADAD),
-              ),
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
-
-class BuildTowingCard extends StatefulWidget {
-  final name1;
-  final name2;
-  final name3;
-  final icon1;
-  final icon2;
-  final icon3;
-  const BuildTowingCard({
-    Key? key,
-    this.name1,
-    this.name2,
-    this.name3,
-    this.icon1,
-    this.icon2,
-    this.icon3,
-  }) : super(key: key);
-
-  @override
-  State<BuildTowingCard> createState() => _BuildTowingCardState();
-}
-
-class _BuildTowingCardState extends State<BuildTowingCard> {
-  String isSelectCard = "Car Towing";
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3.5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () {
-              isSelectCard = widget.name1;
-              print(isSelectCard);
-              print(widget.name1);
-              print("object");
-              setState(() {});
-            },
-            child: Container(
-              height: Get.height * 0.1,
-              width: Get.width * 0.26,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: isSelectCard == widget.name1
-                      ? const Color(0xffCAFACC)
-                      : const Color(0xffEAEAEA)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(),
-                  SvgPicture.asset(
-                    "assets/icons/${widget.icon1}.svg",
-                    height: Get.width * 0.07,
-                    width: Get.width * 0.07,
-                    color: const Color(0xff818181),
-                  ),
-                  Text(
-                    "${widget.name1}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: const Color(0xff818181), fontSize: 10.5),
-                  ),
-                  const SizedBox(),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 5),
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: Container(
-              height: Get.height * 0.1,
-              // width: Get.width * 0.25,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xffEAEAEA)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(),
-                  SvgPicture.asset(
-                    "assets/icons/${widget.icon2}.svg",
-                    height: Get.width * 0.07,
-                    width: Get.width * 0.07,
-                    color: const Color(0xff818181),
-                  ),
-                  Text(
-                    "${widget.name2}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: const Color(0xff818181), fontSize: 10.5),
-                  ),
-                  const SizedBox(),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 5),
-          Container(
-            height: Get.height * 0.1,
-            width: Get.width * 0.26,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: const Color(0xffEAEAEA)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(),
-                SvgPicture.asset(
-                  "assets/icons/${widget.icon3}.svg",
-                  height: Get.width * 0.07,
-                  width: Get.width * 0.07,
-                  color: const Color(0xff818181),
-                ),
-                Text(
-                  "${widget.name3}",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      color: const Color(0xff818181), fontSize: 10.5),
-                ),
-                const SizedBox(),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

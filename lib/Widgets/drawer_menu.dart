@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:restowcustomer/Constants/colors.dart';
+import 'package:restowcustomer/Screens/Calendar/calendar_screen.dart';
 import 'package:restowcustomer/Screens/ChangePassword/change_password.dart';
 import 'package:restowcustomer/Screens/ContactUs/contact_us.dart';
 import 'package:restowcustomer/Screens/Home/home_screen.dart';
@@ -223,6 +224,9 @@ class _MyDrawerState extends State<MyDrawer> {
                           break;
                         case 3:
                           Get.to(RatingReviewScreen());
+                          break;
+                        case 4:
+                          Get.to(CalendarScreen());
                           break;
                         case 5:
                           Get.to(AboutUs());

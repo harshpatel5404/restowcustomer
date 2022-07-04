@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:restowcustomer/Screens/Calendar/calendar_screen.dart';
 import 'package:restowcustomer/Screens/ForgotPassword/forgotpassword.dart';
 import 'package:restowcustomer/Screens/Home/home_screen.dart';
 import 'package:restowcustomer/Screens/Payments/pay_screen.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: background,
         fontFamily: 'Roboto',
       ),
-      home: const SplashScreen(),
+      home: CalendarScreen(),
     );
   }
 }
