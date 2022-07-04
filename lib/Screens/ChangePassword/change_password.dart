@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:restowcustomer/Constants/colors.dart';
+import 'package:restowcustomer/Screens/Home/home_screen.dart';
 import 'package:restowcustomer/Screens/SignUp/sign_up_screen.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/icon.dart';
@@ -205,7 +206,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 child: MyButton(
                   btntext: "Submit",
                   onpress: () {
-                    Get.toNamed("/home");
+                    Get.to(HomeScreen());
                   },
                 ),
               ),

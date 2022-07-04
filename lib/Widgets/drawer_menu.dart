@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 import 'package:restowcustomer/Constants/colors.dart';
 import 'package:restowcustomer/Screens/ChangePassword/change_password.dart';
 import 'package:restowcustomer/Screens/ContactUs/contact_us.dart';
+import 'package:restowcustomer/Screens/Home/home_screen.dart';
 import 'package:restowcustomer/Screens/Notifications/notifications.dart';
 import 'package:restowcustomer/Screens/Payments/payments.dart';
-import 'package:restowcustomer/Screens/PendingUpcomingRequest/pending_upcoming_request.dart';
+import 'package:restowcustomer/Screens/Profile/profile_screen.dart';
 import 'package:restowcustomer/Screens/Rating%20Review/rating_review.dart';
 import 'package:restowcustomer/Screens/SignIn/sign_in_screen.dart';
 import 'package:restowcustomer/Screens/VehicleInfo/vehicle_info.dart';
@@ -39,7 +40,6 @@ class _MyDrawerState extends State<MyDrawer> {
     {"name": "Logout", "icon": "logout"},
   ];
 
-  // List towname = ["Current Request", "Pending Request", "Upcoming Request"];
   List settingname = [
     "Profile Info",
     "Vehicle Info",
@@ -62,7 +62,9 @@ class _MyDrawerState extends State<MyDrawer> {
                 child: Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(ProfileScreen());
+                      },
                       child: CircleAvatar(
                         radius: Get.width * 0.1,
                         backgroundImage: AssetImage("assets/images/person.png"),
@@ -174,7 +176,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                           });
                                           switch (index) {
                                             case 0:
-                                              Get.toNamed("/profile");
+                                              Get.to(ProfileScreen());
                                               break;
                                             case 1:
                                               Get.to(VehicleInfo());
@@ -214,7 +216,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
                       switch (index) {
                         case 0:
-                          Get.to(VehicleTowPage());
+                          Get.to(HomeScreen());
                           break;
                         case 2:
                           Get.to(Notifications());

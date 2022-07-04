@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:restowcustomer/Constants/colors.dart';
 import 'package:restowcustomer/Screens/Notifications/notifications.dart';
+import 'package:restowcustomer/Screens/VehicleInfo/add_new_vehicle.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/icon.dart';
 import 'package:restowcustomer/Widgets/text_widget.dart';
@@ -220,10 +221,11 @@ class _VehicleInfoState extends State<VehicleInfo> {
             ),
             Padding(
               padding: EdgeInsets.all(Get.width * 0.04),
-              child: MyButton(onpress: () 
-              {
-                
-              }, btntext: "Add New Vehicle"),
+              child: MyButton(
+                  onpress: () {
+                    Get.to(AddVehicle());
+                  },
+                  btntext: "Add New Vehicle"),
             )
           ],
         ),

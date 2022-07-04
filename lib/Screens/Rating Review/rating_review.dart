@@ -148,17 +148,19 @@ class _RatingReviewScreenState extends State<RatingReviewScreen> {
                         hintStyle: const TextStyle(
                             fontSize: 17, color: const Color(0xffC3C3C3)),
                         hintText: 'Comments..',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                                width: 1,
-                                color: Color(0xffE4E4E4).withOpacity(0.4))),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
                             width: 1,
-                            color: Color(0xffE4E4E4).withOpacity(0.5),
+                            color: Color(0xff333333),
                           ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: Color(0xffE4E4E4),
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
                         contentPadding: EdgeInsets.all(Get.width * 0.05),
                       ),
