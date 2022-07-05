@@ -73,7 +73,6 @@ class _PayScreenState extends State<PayScreen> {
                 ),
               ),
               Container(
-                height: Get.height * 0.47,
                 width: Get.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -93,7 +92,6 @@ class _PayScreenState extends State<PayScreen> {
                                   const EdgeInsets.symmetric(vertical: 5.0),
                               child: Text(
                                 "Jonson has accepted your booking request & will arrive shortly. Please make the payment to continue the process...",
-                                // maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Color(0xffA1AA94),
@@ -109,69 +107,75 @@ class _PayScreenState extends State<PayScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CircleAvatar(
-                                radius: Get.height * 0.045,
-                                backgroundImage:
-                                    AssetImage("assets/images/profile.png"),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Text(
-                                    " John doe",
-                                    style: TextStyle(
-                                      color: Color(0xff333333),
-                                      fontSize: 14,
+                                  CircleAvatar(
+                                    radius: Get.height * 0.045,
+                                    backgroundImage:
+                                        AssetImage("assets/images/profile.png"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 4.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          " John doe",
+                                          style: TextStyle(
+                                            color: Color(0xff333333),
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Service Completed : 105",
+                                          style: TextStyle(
+                                              color: Color(0xff7E7E7E),
+                                              fontSize: 13.5,
+                                              fontWeight: FontWeight.normal),
+                                        ),
+                                        Row(
+                                          children: [
+                                            RatingBar(
+                                              initialRating: 4,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: false,
+                                              itemCount: 5,
+                                              itemSize: Get.width * 0.04,
+                                              ratingWidget: RatingWidget(
+                                                full: Container(
+                                                  height: Get.height * 0.02,
+                                                  width: Get.height * 0.02,
+                                                  child: Image.asset(
+                                                    'assets/images/fullrate.png',
+                                                  ),
+                                                ),
+                                                empty: Image.asset(
+                                                  'assets/images/emptyrate.png',
+                                                  color: Colors.grey[300],
+                                                ),
+                                                half: SizedBox(),
+                                              ),
+                                              itemPadding: EdgeInsets.symmetric(
+                                                  horizontal: 1.0),
+                                              onRatingUpdate: (rating) {
+                                                print(rating);
+                                              },
+                                            ),
+                                            Text(
+                                              "(4.0)",
+                                              style: TextStyle(
+                                                  color: Color(0xff7E7E7E),
+                                                  fontSize: 13.5,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    "Service Completed : 105",
-                                    style: TextStyle(
-                                        color: Color(0xff7E7E7E),
-                                        fontSize: 13.5,
-                                        fontWeight: FontWeight.normal),
-                                  ),
-                                  Row(
-                                    children: [
-                                      RatingBar(
-                                        initialRating: 4,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 5,
-                                        itemSize: Get.width * 0.04,
-                                        ratingWidget: RatingWidget(
-                                          full: Container(
-                                            height: Get.height * 0.02,
-                                            width: Get.height * 0.02,
-                                            child: Image.asset(
-                                              'assets/images/fullrate.png',
-                                            ),
-                                          ),
-                                          empty: Image.asset(
-                                            'assets/images/emptyrate.png',
-                                            color: Colors.grey[300],
-                                          ),
-                                          half: SizedBox(),
-                                        ),
-                                        itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 1.0),
-                                        onRatingUpdate: (rating) {
-                                          print(rating);
-                                        },
-                                      ),
-                                      Text(
-                                        "(4.0)",
-                                        style: TextStyle(
-                                            color: Color(0xff7E7E7E),
-                                            fontSize: 13.5,
-                                            fontWeight: FontWeight.normal),
-                                      ),
-                                    ],
-                                  ),
                                 ],
-                              ),
-                              SizedBox(
-                                width: Get.width * 0.08,
                               ),
                               Card(
                                 shape: RoundedRectangleBorder(
@@ -180,9 +184,9 @@ class _PayScreenState extends State<PayScreen> {
                                         color: Colors.grey, width: 0.5)),
                                 elevation: 1,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
+                                  padding: const EdgeInsets.all(2.5),
                                   child: CircleAvatar(
-                                    radius: 22,
+                                    radius: 20,
                                     backgroundColor: kPrimaryColor,
                                     child: Icon(
                                       Icons.call,
@@ -251,4 +255,3 @@ class _PayScreenState extends State<PayScreen> {
     );
   }
 }
-

@@ -225,9 +225,9 @@ class _MyDrawerState extends State<MyDrawer> {
                         case 3:
                           Get.to(RatingReviewScreen());
                           break;
-                        case 4:
-                          Get.to(CalendarScreen());
-                          break;
+                        // case 4:
+                        //   Get.to(CalendarScreen());
+                        //   break;
                         case 5:
                           Get.to(AboutUs());
                           break;
