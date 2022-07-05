@@ -109,78 +109,82 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Divider(),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.0),
-                  child: CalendarCarousel(
-                    customGridViewPhysics: const NeverScrollableScrollPhysics(),
-                    height: Get.height * 0.5,
-                    showHeaderButton: true,
-                    weekendTextStyle: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Roboto",
-                    ),
-                    weekFormat: false,
-                    iconColor: Colors.grey,
-                    markedDateWidget: Container(
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(50),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    child: CalendarCarousel(
+                      customGridViewPhysics:
+                          const NeverScrollableScrollPhysics(),
+                      height: Get.height * 0.55,
+                      showHeaderButton: true,
+                      weekendTextStyle: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Roboto",
                       ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          dt.day.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
+                      weekFormat: false,
+                      iconColor: Colors.grey,
+                      markedDateWidget: Container(
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            dt.day.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    headerTextStyle: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: "Roboto",
-                    ),
-                    showHeader: true,
-                    showWeekDays: true,
-                    todayButtonColor: kPrimaryColor,
-                    markedDatesMap: _markedDateMap,
-                    daysTextStyle: const TextStyle(
-                        fontFamily: "Roboto", color: Colors.black),
-                    selectedDayTextStyle: const TextStyle(color: Colors.black),
-                    todayBorderColor: Colors.transparent,
-                    weekdayTextStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontFamily: "Roboto",
-                    ),
-                    weekDayMargin: EdgeInsets.only(bottom: 10),
-                    inactiveDaysTextStyle: const TextStyle(
-                        fontFamily: "Roboto", color: Colors.black),
-                    prevDaysTextStyle: const TextStyle(
-                        fontFamily: "Roboto", color: Colors.grey),
-                    nextDaysTextStyle: const TextStyle(
-                        fontFamily: "Roboto", color: Colors.grey),
-                    maxSelectedDate: DateTime(DateTime.now().year + 100,
-                        DateTime.now().month, DateTime.now().day),
-                    onDayPressed: (val, event) {
-                      // print(val);
-                      // selectedDate = val;
-                      dt = DateTime.parse(val.toString());
-                      _markedDateMap.clear();
-                      _markedDateMap.add(
-                          DateTime(dt.year, dt.month, dt.day),
-                          Event(
-                            date: DateTime(dt.year, dt.month, dt.day),
-                            title: 'Event 5',
-                          ));
+                      headerTextStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: "Roboto",
+                      ),
+                      showHeader: true,
+                      showWeekDays: true,
+                      todayButtonColor: kPrimaryColor,
+                      markedDatesMap: _markedDateMap,
+                      daysTextStyle: const TextStyle(
+                          fontFamily: "Roboto", color: Colors.black),
+                      selectedDayTextStyle:
+                          const TextStyle(color: Colors.black),
+                      todayBorderColor: Colors.transparent,
+                      weekdayTextStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontFamily: "Roboto",
+                      ),
+                      weekDayMargin: EdgeInsets.only(bottom: 10),
+                      inactiveDaysTextStyle: const TextStyle(
+                          fontFamily: "Roboto", color: Colors.black),
+                      prevDaysTextStyle: const TextStyle(
+                          fontFamily: "Roboto", color: Colors.grey),
+                      nextDaysTextStyle: const TextStyle(
+                          fontFamily: "Roboto", color: Colors.grey),
+                      maxSelectedDate: DateTime(DateTime.now().year + 100,
+                          DateTime.now().month, DateTime.now().day),
+                      onDayPressed: (val, event) {
+                        // print(val);
+                        // selectedDate = val;
+                        dt = DateTime.parse(val.toString());
+                        _markedDateMap.clear();
+                        _markedDateMap.add(
+                            DateTime(dt.year, dt.month, dt.day),
+                            Event(
+                              date: DateTime(dt.year, dt.month, dt.day),
+                              title: 'Event 5',
+                            ));
 
-                      setState(() {});
-                    },
-                    todayTextStyle: const TextStyle(color: Colors.black),
+                        setState(() {});
+                      },
+                      todayTextStyle: const TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
                 const Padding(
