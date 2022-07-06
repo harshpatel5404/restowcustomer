@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:restowcustomer/Constants/colors.dart';
+import 'package:restowcustomer/Screens/Calendar/calendar_screen.dart';
 import 'package:restowcustomer/Screens/VehicleTow/vehicle_tow.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/icon.dart';
@@ -20,8 +21,59 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+  final List<Marker> _markers = <Marker>[];
 
-  bool isSwitched = false;
+  var location = Location();
+  late bool _serviceEnabled;
+  late PermissionStatus _permissionGranted;
+  LocationData? _locationData;
+  Set<Circle>? mCircle;
+
+  void getlocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _locationData = await location.getLocation();
+    _markers.add(Marker(
+        markerId: MarkerId('SomeId'),
+        position: LatLng(_locationData!.latitude!.toDouble(),
+            _locationData!.longitude!.toDouble()),
+        infoWindow: InfoWindow(title: 'The title of the marker')));
+
+    mCircle = Set.from([
+      Circle(
+        circleId: CircleId("id1"),
+        center: LatLng(_locationData!.latitude!.toDouble(),
+            _locationData!.longitude!.toDouble()),
+        radius: 500,
+      ),
+    ]);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getlocation();
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      // Use current location
+    });
+  }
+
+  GoogleMapController? controller;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +81,24 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const MyDrawer(),
       body: Stack(
         children: [
-          Center(
-            child: InkWell(
-                onTap: () {}, child: Image.asset("assets/images/splash.png")),
+          GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: _locationData != null
+                  ? LatLng(_locationData!.latitude!.toDouble(),
+                      _locationData!.longitude!.toDouble())
+                  : const LatLng(62.750411, 26.140096),
+              zoom: 4,
+            ),
+            markers: Set<Marker>.of(_markers),
+            // circles: Set.from([
+            //   Circle(
+            //     circleId: const CircleId("id1"),
+            //     fillColor: Colors.grey,
+            //     center: LatLng(_locationData!.latitude!.toDouble(),
+            //         _locationData!.longitude!.toDouble()),
+            //     radius: Get.height * 0.2,
+            //   ),
+            // ]),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,27 +113,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         scaffoldkey.currentState!.openDrawer();
                       },
-                      child: const AppIcon(
+                      child: AppIcon(
                         icon: Icons.menu,
                       ),
                     ),
-                    Card(
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide:
-                              const BorderSide(width: 0, color: Colors.white)),
-                      elevation: 6,
-                      child: Container(
-                        // height: Get.width * 0.14,
-                        width: Get.width * 0.6,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Container(
+                      width: Get.width * 0.6,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.fitWidth,
+                              image: AssetImage(
+                                "assets/images/addressbg.png",
+                              ))),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const Text(
                               "Your Location",
@@ -83,9 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 13,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
+                          ]),
                     ),
                     InkWell(
                       onTap: () {
@@ -94,8 +153,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Card(
                         shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(
-                                width: 0, color: Colors.white)),
+                            borderSide:
+                                BorderSide(width: 0, color: Colors.white)),
                         elevation: 8,
                         child: Padding(
                             padding: EdgeInsets.all(Get.width * 0.03),
@@ -168,7 +227,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: Get.width * 0.4,
                           height: Get.height * 0.08,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.to(CalendarScreen());
+                            },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   kPrimaryColor),

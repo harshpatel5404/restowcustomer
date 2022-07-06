@@ -41,7 +41,20 @@ dependencies:
   dotted_border: ^2.0.0+2
   intl: ^0.17.0
   flutter_calendar_carousel: ^2.3.1
-  # google_maps_flutter: ^2.1.8
+  http: ^0.13.4
+  json_serializable: ^6.2.0
+  build_runner: ^2.1.11
+  json_annotation:
+  google_maps_flutter: ^2.1.8
+  # path_provider: ^2.0.11
+  # multi_image_picker2: ^5.0.2
+  # permission_handler: ^6.1.1
+  # image_gallery_saver: ^1.6.9
+  image_picker: ^0.8.5+3
+  location: ^4.4.0
+ 
+ 
+
 
 dev_dependencies:
   flutter_test:
@@ -69,7 +82,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-  #   - images/a_dot_ham.jpeg
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

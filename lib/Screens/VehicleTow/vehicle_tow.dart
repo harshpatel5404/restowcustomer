@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:restowcustomer/Constants/colors.dart';
 import 'package:restowcustomer/Screens/Notifications/notifications.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
@@ -24,6 +27,23 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
   String selectedValue = 'Select Vehicle';
   List paylist = ["Direct Invoice", "Pay By Card", "Insurance", "Bank / Fund"];
   int payindex = 0;
+  final ImagePicker imgpicker = ImagePicker();
+  List<XFile>? imagefiles;
+
+  Future pickImgs() async {
+    try {
+      var pickedfiles = await imgpicker.pickMultiImage();
+      if (pickedfiles != null) {
+        imagefiles = pickedfiles;
+        setState(() {});
+      } else {
+        print("No image is selected.");
+      }
+    } catch (e) {
+      print("error while picking file.");
+    }
+  }
+
   String isSelectCard = "Car towing";
   TextEditingController numberController = TextEditingController(text: "");
   TextEditingController brandController = TextEditingController(text: "");
@@ -52,6 +72,7 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
   ];
 
   bool isDropdownOpen = false;
+  bool isFormOpen = false;
   TextEditingController descController = TextEditingController(text: "");
 
   @override
@@ -212,159 +233,178 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                     padding: EdgeInsets.symmetric(
                       vertical: Get.height * 0.03,
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 12),
-                      width: Get.width,
-                      color: kPrimaryColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            "Partner's Vehicle / Add New Vehicle",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontFamily: "Roboto"),
-                          ),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                          )
-                        ],
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isFormOpen = !isFormOpen;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 12),
+                        width: Get.width,
+                        color: kPrimaryColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Text(
+                              "Partner's Vehicle / Add New Vehicle",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontFamily: "Roboto"),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Vehicle Number",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: textcolor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF7F6FB),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextField(
-                            controller: numberController,
-                            cursorColor: Colors.black,
-                            style:
-                                const TextStyle(fontSize: 17, color: textcolor),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(
-                                  fontSize: 17, color: const Color(0xffC3C3C3)),
-                              hintText: 'Vehicle Number',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                  isFormOpen
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Vehicle Number",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: textcolor,
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                      const Text(
-                        "Vehicle Brand",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: textcolor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF7F6FB),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextField(
-                            controller: brandController,
-                            cursorColor: Colors.black,
-                            style:
-                                const TextStyle(fontSize: 17, color: textcolor),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(
-                                  fontSize: 17, color: const Color(0xffC3C3C3)),
-                              hintText: 'Vehicle Brand',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF7F6FB),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: TextField(
+                                  controller: numberController,
+                                  cursorColor: Colors.black,
+                                  style: const TextStyle(
+                                      fontSize: 17, color: textcolor),
+                                  decoration: InputDecoration(
+                                    hintStyle: const TextStyle(
+                                        fontSize: 17, color: Color(0xffC3C3C3)),
+                                    hintText: 'Vehicle Number',
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.all(Get.width * 0.05),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                      Text(
-                        "Vehicle Model",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: textcolor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF7F6FB),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextField(
-                            controller: modelController,
-                            cursorColor: Colors.black,
-                            style:
-                                const TextStyle(fontSize: 17, color: textcolor),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(
-                                  fontSize: 17, color: const Color(0xffC3C3C3)),
-                              hintText: 'Vehicle Model',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            SizedBox(height: Get.height * 0.02),
+                            const Text(
+                              "Vehicle Brand",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: textcolor,
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                      const Text(
-                        "Vehicle Wheel",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: textcolor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF7F6FB),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: TextField(
-                            controller: wheelController,
-                            cursorColor: Colors.black,
-                            style:
-                                const TextStyle(fontSize: 17, color: textcolor),
-                            decoration: InputDecoration(
-                              hintStyle: const TextStyle(
-                                  fontSize: 17, color: const Color(0xffC3C3C3)),
-                              hintText: 'Vehicle Wheel',
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.all(Get.width * 0.05),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF7F6FB),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: TextField(
+                                  controller: brandController,
+                                  cursorColor: Colors.black,
+                                  style: const TextStyle(
+                                      fontSize: 17, color: textcolor),
+                                  decoration: InputDecoration(
+                                    hintStyle: const TextStyle(
+                                        fontSize: 17,
+                                        color: const Color(0xffC3C3C3)),
+                                    hintText: 'Vehicle Brand',
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.all(Get.width * 0.05),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: Get.height * 0.02),
-                    ],
-                  ),
-
+                            SizedBox(height: Get.height * 0.02),
+                            Text(
+                              "Vehicle Model",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: textcolor,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF7F6FB),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: TextField(
+                                  controller: modelController,
+                                  cursorColor: Colors.black,
+                                  style: const TextStyle(
+                                      fontSize: 17, color: textcolor),
+                                  decoration: InputDecoration(
+                                    hintStyle: const TextStyle(
+                                        fontSize: 17,
+                                        color: const Color(0xffC3C3C3)),
+                                    hintText: 'Vehicle Model',
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.all(Get.width * 0.05),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: Get.height * 0.02),
+                            const Text(
+                              "Vehicle Wheel",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: textcolor,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF7F6FB),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: TextField(
+                                  controller: wheelController,
+                                  cursorColor: Colors.black,
+                                  style: const TextStyle(
+                                      fontSize: 17, color: textcolor),
+                                  decoration: InputDecoration(
+                                    hintStyle: const TextStyle(
+                                        fontSize: 17,
+                                        color: const Color(0xffC3C3C3)),
+                                    hintText: 'Vehicle Wheel',
+                                    border: InputBorder.none,
+                                    contentPadding:
+                                        EdgeInsets.all(Get.width * 0.05),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: Get.height * 0.02),
+                          ],
+                        )
+                      : Container(),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 3.5),
                     child: Row(
@@ -863,7 +903,9 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: Get.height * 0.03),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        pickImgs();
+                      },
                       child: Container(
                         width: Get.width,
                         height: Get.width * 0.17,
@@ -907,77 +949,48 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: Get.height * 0.14,
-                            width: Get.width * 0.28,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                    fit: BoxFit.fitHeight,
-                                    image:
-                                        AssetImage("assets/images/img2.png")),
-                                color: const Color(0xffEAEAEA)),
+                  imagefiles != null
+                      ? Container(
+                          height: Get.height * 0.15,
+                          width: Get.width,
+                          child: ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                Padding(padding: EdgeInsets.only(right: 5)),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: imagefiles!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              if (index < 3) {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      height: Get.height * 0.14,
+                                      width: Get.width * 0.28,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              fit: BoxFit.fitHeight,
+                                              image: FileImage(File(
+                                                  imagefiles![index].path))),
+                                          color: const Color(0xffEAEAEA)),
+                                    ),
+                                    Positioned(
+                                        top: 8,
+                                        right: 8,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/remove.svg",
+                                          height: Get.width * 0.06,
+                                        ))
+                                  ],
+                                );
+                              } else {
+                                return SizedBox();
+                              }
+                            },
                           ),
-                          Positioned(
-                              top: 8,
-                              right: 8,
-                              child: SvgPicture.asset(
-                                "assets/icons/remove.svg",
-                                height: Get.width * 0.06,
-                              ))
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: Get.height * 0.14,
-                            width: Get.width * 0.28,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                    fit: BoxFit.fitHeight,
-                                    image:
-                                        AssetImage("assets/images/img2.png")),
-                                color: const Color(0xffEAEAEA)),
-                          ),
-                          Positioned(
-                              top: 8,
-                              right: 8,
-                              child: SvgPicture.asset(
-                                "assets/icons/remove.svg",
-                                height: Get.width * 0.06,
-                              ))
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: Get.height * 0.14,
-                            width: Get.width * 0.28,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: const DecorationImage(
-                                    fit: BoxFit.fitHeight,
-                                    image:
-                                        AssetImage("assets/images/img2.png")),
-                                color: const Color(0xffEAEAEA)),
-                          ),
-                          Positioned(
-                              top: 8,
-                              right: 8,
-                              child: SvgPicture.asset(
-                                "assets/icons/remove.svg",
-                                height: Get.width * 0.06,
-                              ))
-                        ],
-                      ),
-                    ],
-                  ),
+                        )
+                      : Container(),
+
                   SizedBox(
                     height: Get.width * 0.05,
                   ),
@@ -1050,6 +1063,7 @@ class _VehicleTowPageState extends State<VehicleTowPage> {
                                     : const Color(0xffE8F1E5),
                                 child: Text(
                                   paylist[index],
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: payindex == index
                                           ? Colors.white
