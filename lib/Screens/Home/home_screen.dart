@@ -8,7 +8,6 @@ import 'package:restowcustomer/Screens/Calendar/calendar_screen.dart';
 import 'package:restowcustomer/Screens/VehicleTow/vehicle_tow.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/icon.dart';
-
 import '../../Widgets/drawer_menu.dart';
 import '../Notifications/notifications.dart';
 
@@ -66,12 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getlocation();
-    location.onLocationChanged.listen((LocationData currentLocation) {
-      // Use current location
-    });
+    // getlocation();
+    // location.onLocationChanged.listen((LocationData currentLocation) {
+      
+    // });
   }
 
+  
   GoogleMapController? controller;
 
   @override
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   : const LatLng(62.750411, 26.140096),
               zoom: 4,
             ),
-            markers: Set<Marker>.of(_markers),
+            // markers: Set<Marker>.of(_markers),
             // circles: Set.from([
             //   Circle(
             //     circleId: const CircleId("id1"),

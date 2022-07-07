@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:restowcustomer/Screens/SignIn/sign_in_screen.dart';
 
@@ -15,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff8f8f8),
+      backgroundColor: const Color(0xfff8f8f8),
       body: InkWell(
         onTap: () {
           Get.to(SignInPage());
@@ -32,10 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
             Column(
               children: [
                 Container(
+                  margin: EdgeInsets.all(10),
                   width: Get.width,
                   child: Image.asset("assets/images/splash.png"),
                 ),
-                SizedBox(height: Get.height * 0.08),
+                SizedBox(height: Get.height * 0.07),
               ],
             )
           ],

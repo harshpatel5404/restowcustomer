@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:restowcustomer/Constants/colors.dart';
-import 'package:restowcustomer/Screens/Calendar/calendar_screen.dart';
 import 'package:restowcustomer/Screens/ChangePassword/change_password.dart';
 import 'package:restowcustomer/Screens/ContactUs/contact_us.dart';
 import 'package:restowcustomer/Screens/Home/home_screen.dart';
@@ -102,7 +98,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                physics: ScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: drawerdata.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == onTapIndex) {

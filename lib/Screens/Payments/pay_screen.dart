@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:restowcustomer/Widgets/buttons.dart';
 import 'package:restowcustomer/Widgets/icon.dart';
 import 'package:restowcustomer/Widgets/text_widget.dart';
@@ -27,13 +28,15 @@ class _PayScreenState extends State<PayScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldkey,
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image.asset("assets/images/splash.png"),
-          ),
+           const GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target:  LatLng(62.750411, 26.140096),
+              zoom: 4,
+            ),
+            ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -47,7 +50,7 @@ class _PayScreenState extends State<PayScreen> {
                       onTap: () {
                         scaffoldkey.currentState!.openDrawer();
                       },
-                      child: AppIcon(
+                      child: const AppIcon(
                         icon: Icons.menu,
                       ),
                     ),
@@ -59,7 +62,7 @@ class _PayScreenState extends State<PayScreen> {
                         shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(50),
                             borderSide:
-                                BorderSide(width: 0, color: Colors.white)),
+                                const BorderSide(width: 0, color: Colors.white)),
                         elevation: 8,
                         child: Padding(
                             padding: EdgeInsets.all(Get.width * 0.03),
@@ -74,7 +77,7 @@ class _PayScreenState extends State<PayScreen> {
               ),
               Container(
                 width: Get.width,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
                 child: Padding(
@@ -87,21 +90,21 @@ class _PayScreenState extends State<PayScreen> {
                           child: Container(
                             width: Get.width * 0.8,
                             alignment: Alignment.center,
-                            child: Padding(
+                            child: const Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
-                              child: Text(
+                                  EdgeInsets.symmetric(vertical: 5.0),
+                              child: const Text(
                                 "Jonson has accepted your booking request & will arrive shortly. Please make the payment to continue the process...",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Color(0xffA1AA94),
+                                  color: const Color(0xffA1AA94),
                                   fontSize: 13,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 3.0),
                           child: Row(
@@ -112,7 +115,7 @@ class _PayScreenState extends State<PayScreen> {
                                   CircleAvatar(
                                     radius: Get.height * 0.045,
                                     backgroundImage:
-                                        AssetImage("assets/images/profile.png"),
+                                        const AssetImage("assets/images/profile.png"),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 4.0),
@@ -120,17 +123,17 @@ class _PayScreenState extends State<PayScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           " John doe",
-                                          style: TextStyle(
-                                            color: Color(0xff333333),
+                                          style: const TextStyle(
+                                            color: const Color(0xff333333),
                                             fontSize: 14,
                                           ),
                                         ),
-                                        Text(
+                                        const Text(
                                           "Service Completed : 105",
-                                          style: TextStyle(
-                                              color: Color(0xff7E7E7E),
+                                          style: const TextStyle(
+                                              color: const Color(0xff7E7E7E),
                                               fontSize: 13.5,
                                               fontWeight: FontWeight.normal),
                                         ),
@@ -154,18 +157,18 @@ class _PayScreenState extends State<PayScreen> {
                                                   'assets/images/emptyrate.png',
                                                   color: Colors.grey[300],
                                                 ),
-                                                half: SizedBox(),
+                                                half: const SizedBox(),
                                               ),
-                                              itemPadding: EdgeInsets.symmetric(
+                                              itemPadding: const EdgeInsets.symmetric(
                                                   horizontal: 1.0),
                                               onRatingUpdate: (rating) {
                                                 print(rating);
                                               },
                                             ),
-                                            Text(
+                                            const Text(
                                               "(4.0)",
-                                              style: TextStyle(
-                                                  color: Color(0xff7E7E7E),
+                                              style: const TextStyle(
+                                                  color: const Color(0xff7E7E7E),
                                                   fontSize: 13.5,
                                                   fontWeight:
                                                       FontWeight.normal),
@@ -180,15 +183,15 @@ class _PayScreenState extends State<PayScreen> {
                               Card(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
-                                    side: BorderSide(
+                                    side: const BorderSide(
                                         color: Colors.grey, width: 0.5)),
                                 elevation: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.5),
-                                  child: CircleAvatar(
+                                child: const Padding(
+                                  padding: EdgeInsets.all(2.5),
+                                  child: const CircleAvatar(
                                     radius: 20,
                                     backgroundColor: kPrimaryColor,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.call,
                                       color: Colors.white,
                                     ),
@@ -198,30 +201,30 @@ class _PayScreenState extends State<PayScreen> {
                             ],
                           ),
                         ),
-                        TextWidget(
+                        const TextWidget(
                           text1: " Contact No : ",
                           text2: "632145121",
                         ),
-                        TextWidget(
+                        const TextWidget(
                           text1: " Vehicle No : ",
                           text2: "SD25132",
                         ),
-                        TextWidget(
+                        const TextWidget(
                           text1: " Vehicle Type : ",
                           text2: "Medium Tow Van",
                         ),
-                        TextWidget(
+                        const TextWidget(
                           text1: " Verification Code : ",
                           text2: "2253",
                         ),
-                        Divider(),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               "\$232",
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xff535353),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
